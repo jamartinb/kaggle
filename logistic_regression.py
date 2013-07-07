@@ -1,7 +1,6 @@
 import util
 import numpy as np
-from sklearn.linear_model import LogisticRegression
-from sklearn.preprocessing import OneHotEncoder
+from sklearn import linear_model
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.grid_search import GridSearchCV
 from scipy import sparse
@@ -9,7 +8,7 @@ from itertools import combinations
 from numpy import array, hstack
 import GeneralHashFunctions as ghf
 
-lg = LogisticRegression()
+lg = linear_model.SGDClassifier(loss='log')
 hash_mappings = dict()
 ctr = 0
 
@@ -23,8 +22,9 @@ def pre_process_data(X):
 	#print x3.shape
 	x_all = np.hstack((x1,x2,x3))
 	
-	features = [0,8,9,10,36,37,38,41,41,43,47,53,60,61,63,64,67,69,71,75,85]
-	x_selected = x_all[:,features]
+	#features = [0,8,9,10,36,37,38,41,41,43,47,53,60,61,63,64,67,69,71,75,85]
+	#features = [0, 8, 9, 10, 19, 34, 36, 37, 38, 41, 42, 43, 47, 53, 55, 60, 61, 63, 64, 67, 69, 71, 75, 81, 82, 85]
+	x_selected = x_all#[:,features]
 	
 	'''util.print_debug_msg('Selected Features. Now One Hot Encoding')
 	enc = OneHotEncoder()
@@ -34,9 +34,14 @@ def pre_process_data(X):
 	x_transformed = enc.fit_transform(X_selected)'''
 	return x_selected
 
-def normalize_features(X):
+def normalize_features(X,y=None):
 	util.print_debug_msg('Selected Features. Now One Hot Encoding')
 	enc = OneHotEncoder()
+	if (y!=None):
+		enc.fit(np.vstack((X,y)))
+		X = enc.transform(X)
+		y = enc.transform(y)
+		return X,y
 	return enc.fit_transform(X)
 	
 def my_hash(key):
@@ -59,7 +64,7 @@ def group_data(data, degree=3, hash=my_hash):
 
 def grid_search(X_train, y_train):
 	util.print_debug_msg('Starting grid search')
-	parameters = {'C':[1,2,3,4]}
+	parameters = {'C':[0.5,1,1.5,2,2.5,3,3.5,4],'penalty':['l1','l2']}
 	clf = GridSearchCV(lg, parameters, scoring="roc_auc", n_jobs=2)
 	util.print_debug_msg('Now fitting in grid search')
 	clf.fit(X_train, y_train)
@@ -72,4 +77,5 @@ def train_predict(X_train, y_train, X_test):
 	lg.fit(X_train, y_train)
 	util.print_debug_msg('Predicting LG Classifier')
 	return lg.predict_proba(X_test)[:, 1]
+	#return lg.predict(X_test)
 
