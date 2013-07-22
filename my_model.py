@@ -18,6 +18,10 @@ def group_data(data, degree=3, hash=hash):
         new_data.append([hash(tuple(v)) for v in data[:,indicies]])
     return array(new_data).T
 
+# TODO(jamartin): There is plenty of repeated code among the files. Duplicated
+#     code is one of the main sign that the code should be refactored.
+#     To begin width, make sure you have a good reason to have several methods
+#     with the same name.
 def OneHotEncoder(data, keymap=None):
      """
      OneHotEncoder takes data matrix with categorical columns and
@@ -58,6 +62,8 @@ def create_test_submission(filename, prediction):
 def cv_loop(X, y, model, N):
     mean_auc = 0.
     for i in range(N):
+        # TODO(jamartin): Line split should be either done with 4 spaces before
+        #     or at the level of the previous open parethesis.
         X_train, X_cv, y_train, y_cv = cross_validation.train_test_split(
                                        X, y, test_size=.30)
                                        #random_state = i*SEED)
@@ -118,5 +124,6 @@ if __name__ == "__main__":
     args = { 'train':  '../data/train.csv',
              'test':   '../data/test.csv',
              'submit': 'logistic_regression_pred.csv' }
+    # TODO(jamartin): *arg and **args are discouraged unless strictly necessary.
     main(**args)
     

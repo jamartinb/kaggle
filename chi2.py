@@ -7,6 +7,7 @@ from scipy import sparse
 from itertools import combinations
 from numpy import array, hstack
 
+# TODO(jamartin): These would be great as class attributes.
 hash_mappings = dict()
 ctr = 0
 

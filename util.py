@@ -1,3 +1,6 @@
+# TODO(jamartin): Files should have a general documentation header.
+# TODO(jamartin): Be consistent in the use of either spaces or tabs but,
+#     personally, I think spaces are a better choice.
 import pandas as pd
 from sklearn import metrics
 
@@ -7,6 +10,8 @@ def get_dataframe(file_name):
 	return df
 
 def get_train_set():
+    # TODO(jamartin): Things like '../data/train.csv' should be defined as
+    #     FLAGS. See Argparse (http://docs.python.org/2/library/argparse.html).
 	return get_dataframe('../data/train.csv')
 
 def get_test_set():
@@ -19,10 +24,13 @@ def calculate_auc(y, predictions):
 	return metrics.auc(fpr, tpr)
 	
 def print_debug_msg(msg, DEBUG=True):
+    # @TODO(jamartin): This would be log.debug(...) if you used logging.
 	if DEBUG:
 		print msg
 
 def load_pickle(file_name):
+    # TODO(jamartin): These in-body imports are discouraged and should be
+    #     avoided.
 	import cPickle as pickle
 	return pickle.load(open(file_name,'rb'))
 

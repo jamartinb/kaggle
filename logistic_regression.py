@@ -22,6 +22,16 @@ def pre_process_data(X):
 	#print x3.shape
 	x_all = np.hstack((x1,x2,x3))
 	
+    # TODO(jamartin): Instead of commented code or alternative files you could
+    #     have a main file where you can switch modes using FLAGS.
+    # TODO(jamartin): Additionally, every module X.py should have a test module
+    #     (X_test.py) with, at least, a testcase per method/function. These test
+    #     modules are also a good alternative to keep track of previous attempts
+    #     and configurations.
+    #     See http://docs.python.org/2/library/unittest.html.
+    #     See unittest.skip and unittest.skipIf may help to filter those test
+    #     which are to heavy to execute all the time.
+
 	#features = [0,8,9,10,36,37,38,41,41,43,47,53,60,61,63,64,67,69,71,75,85]
 	#features = [0, 8, 9, 10, 19, 34, 36, 37, 38, 41, 42, 43, 47, 53, 55, 60, 61, 63, 64, 67, 69, 71, 75, 81, 82, 85]
 	x_selected = x_all#[:,features]
@@ -37,6 +47,7 @@ def pre_process_data(X):
 def normalize_features(X,y=None):
 	util.print_debug_msg('Selected Features. Now One Hot Encoding')
 	enc = OneHotEncoder()
+    # TODO(jamartin): Spaces surounding '!='.
 	if (y!=None):
 		enc.fit(np.vstack((X,y)))
 		X = enc.transform(X)

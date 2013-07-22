@@ -4,6 +4,8 @@ import logistic_regression as model
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.cross_validation import StratifiedKFold
 
+
+# TODO(jamartin): Move this into main().
 train = util.get_train_set()
 #test = util.get_test_set()
 
